@@ -5,7 +5,6 @@ import {
   ChatHistory,
   ChatHistoryItem,
   ChatMessage,
-  ContextItemWithId,
   InputModifiers,
   MessageContent,
   PromptLog,
@@ -23,7 +22,6 @@ import { IIdeMessenger } from "../context/IdeMessenger";
 import { defaultModelSelector } from "../redux/selectors/modelSelectors";
 import {
   addPromptCompletionPair,
-  addContextItems,
   clearLastResponse,
   initNewActiveMessage,
   resubmitAtIndex,
@@ -117,7 +115,6 @@ function useChatHandler(dispatch: Dispatch, ideMessenger: IIdeMessenger) {
     input: string,
     historyIndex: number,
     selectedCode: RangeInFile[],
-    contextItems: ContextItemWithId[],
   ) {
     const abortController = new AbortController();
     const cancelToken = abortController.signal;
@@ -174,7 +171,6 @@ function useChatHandler(dispatch: Dispatch, ideMessenger: IIdeMessenger) {
         modifiers,
         ideMessenger,
       );
-      dispatch(addContextItems(contextItems));
 
       // Automatically use currently open file
       if (!modifiers.noContext && (history.length === 0 || index === 0)) {
@@ -256,7 +252,6 @@ function useChatHandler(dispatch: Dispatch, ideMessenger: IIdeMessenger) {
           commandInput,
           historyIndex,
           selectedCode,
-          contextItems,
         );
       }
     } catch (e) {
